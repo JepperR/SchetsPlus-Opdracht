@@ -104,7 +104,7 @@ public class VolRechthoekTool : RechthoekTool
 
 public class CirkelTool : TweepuntTool
 {
-    public override string ToString() { return "Omtrek"; }
+    public override string ToString() { return "omtrek"; }
 
     public override void Bezig(Graphics g, Point p1, Point p2)
     {
@@ -114,7 +114,7 @@ public class CirkelTool : TweepuntTool
 
 public class VolCirkelTool : CirkelTool
 {
-    public override string ToString() { return "Cirkel"; }
+    public override string ToString() { return "cirkel"; }
 
     public override void Compleet(Graphics g, Point p1, Point p2)
     {
