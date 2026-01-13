@@ -48,7 +48,7 @@ public class TekstTool : StartpuntTool
         }
     }
 }
-
+//hoi
 public abstract class TweepuntTool : StartpuntTool
 {
     public static Rectangle Punten2Rechthoek(Point p1, Point p2)
