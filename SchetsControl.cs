@@ -3,6 +3,19 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
+public class Element
+{
+    public string soort { get; set; }
+    public int beginpunt_x { get; set; }
+    public int beginpunt_y { get; set; }
+    public int eindpunt_x { get; set; }
+    public int eindpunt_y { get; set; }
+    public Color kleur { get; set; }
+    public string tekst { get; set; }
+}
+
+
+
 public class SchetsControl : UserControl
 {   
     private Schets schets;

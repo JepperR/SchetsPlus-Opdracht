@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 
 public class Schets
 {
@@ -40,4 +41,12 @@ public class Schets
     {
         bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
     }
+}
+
+static void Main()
+{
+    List<Element> Elementen = new List<Element>()
+    {
+
+    };
 }
