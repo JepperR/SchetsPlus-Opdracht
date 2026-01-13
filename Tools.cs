@@ -48,18 +48,11 @@ public class TekstTool : StartpuntTool
         }
     }
 }
-
 public abstract class TweepuntTool : StartpuntTool
-{
+{ 
     public static Rectangle Punten2Rechthoek(Point p1, Point p2)
     {   return new Rectangle( new Point(Math.Min(p1.X,p2.X), Math.Min(p1.Y,p2.Y))
                             , new Size (Math.Abs(p1.X-p2.X), Math.Abs(p1.Y-p2.Y))
-                            );
-    }
-    public static Ellipse Punten2Cirkel(Point p1, Point p2)
-    {
-        return new Ellipse( new Point(Math.Min(p1.X,p2.X), Math.Min(p1.Y, p2.Y))
-             , new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))
                             );
     }
     public static Pen MaakPen(Brush b, int dikte)
@@ -111,7 +104,7 @@ public class VolRechthoekTool : RechthoekTool
 
 public class CirkelTool : TweepuntTool
 {
-    public override string ToString() { return "kader"; }
+    public override string ToString() { return "Omtrek"; }
 
     public override void Bezig(Graphics g, Point p1, Point p2)
     {
@@ -119,14 +112,15 @@ public class CirkelTool : TweepuntTool
     }
 }
 
-public class VolCirkelTool : RechthoekTool
+public class VolCirkelTool : CirkelTool
 {
-    public override string ToString() { return "vlak"; }
+    public override string ToString() { return "Cirkel"; }
 
     public override void Compleet(Graphics g, Point p1, Point p2)
     {
         g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
     }
+}
 
     public class LijnTool : TweepuntTool
 {
