@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 public interface ISchetsTool
 {
@@ -13,6 +14,7 @@ public interface ISchetsTool
 public abstract class StartpuntTool : ISchetsTool
 {
     protected Point startpunt;
+    protected Point eindpunt;
     protected Brush kwast;
 
     public virtual void MuisVast(SchetsControl s, Point p)
@@ -20,6 +22,8 @@ public abstract class StartpuntTool : ISchetsTool
     }
     public virtual void MuisLos(SchetsControl s, Point p)
     {   kwast = new SolidBrush(s.PenKleur);
+        s.PenKleur = Kleur;
+        eindpunt = p;
     }
     public abstract void MuisDrag(SchetsControl s, Point p);
     public abstract void Letter(SchetsControl s, char c);
@@ -85,14 +89,13 @@ public abstract class TweepuntTool : StartpuntTool
 }
 
 public class RechthoekTool : TweepuntTool
-{
+{    
     public override string ToString() { return "kader"; }
 
     public override void Bezig(Graphics g, Point p1, Point p2)
     {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
     }
 }
-    
 public class VolRechthoekTool : RechthoekTool
 {
     public override string ToString() { return "vlak"; }
@@ -148,4 +151,72 @@ public class GumTool : PenTool
     public override void Bezig(Graphics g, Point p1, Point p2)
     {   g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
     }
+}
+
+public class Vormen
+{
+    string soort { get; set; }
+    string gevuld { get; set; }
+    Point startpunt { get; set; }
+    Point eindpunt { get; set; }
+    Color kleur { get; set; }
+    GetekendeObjecten.Add(soort, gevuld, startpunt, eindpunt, kleur)
+}
+
+public class CirkelVorm : Vormen
+{
+    string soort = "Ellipse";
+    string gevuld = "Nee";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class GevuldeCirkelVorm : Vormen
+{
+    string soort = "Ellipse";
+    string gevuld = "Ja";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class RechthoekVorm : Vormen
+{
+    string soort = "Rectangle";
+    string gevuld = "Nee";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class GevuldeRechthoekVorm : Vormen
+{
+    string soort = "Rectangle";
+    string gevuld = "Ja";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class LijnVorm : Vormen
+{
+    string soort = "Line";
+    string gevuld = "Nee";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class PenVorm : Vormen
+{
+    string soort = "Line";
+    string gevuld = "Nee";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+}
+public class TextVorm : Vormen
+{
+    string soort = "Text";
+    string gevuld = "Nee";
+    Point startpunt = p;
+    Point eindpunt = p;
+    Color kleur = Kleur;
+
 }

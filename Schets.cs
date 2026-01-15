@@ -43,10 +43,3 @@ public class Schets
     }
 }
 
-static void Main()
-{
-    List<Element> Elementen = new List<Element>()
-    {
-
-    };
-}
