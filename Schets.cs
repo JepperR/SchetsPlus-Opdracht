@@ -6,7 +6,7 @@ using System.Drawing.Text;
 public class Schets
 {
     private Bitmap bitmap;
-        
+
     public Schets()
     {
         bitmap = new Bitmap(1, 1);
@@ -19,7 +19,7 @@ public class Schets
     {
         if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)
         {
-            Bitmap nieuw = new Bitmap( Math.Max(sz.Width,  bitmap.Size.Width)
+            Bitmap nieuw = new Bitmap(Math.Max(sz.Width, bitmap.Size.Width)
                                      , Math.Max(sz.Height, bitmap.Size.Height)
                                      );
             Graphics gr = Graphics.FromImage(nieuw);
@@ -42,11 +42,34 @@ public class Schets
         bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
     }
 }
-
-static void Main()
+public abstract class SchetsObject
 {
-    List<Element> Elementen = new List<Element>()
-    {
+    public Color Kleur { get; set; }
+    public abstract void Teken(Graphics g);
+}
 
-    };
+public class LijnObject : SchetsObject
+{
+    public Point StartPunt { get; set; }
+    public Point EindPunt { get; set; }
+
+    public override void Teken(Graphics g)
+    {
+        using (var pen = new Pen(Kleur, 2))
+            g.DrawLine(pen, StartPunt, EindPunt);
+    }
+}
+
+public class RechthoekObject
+{
+    public Rectangle Rect { get; set; }
+    public Color Kleur { get; set; }
+
+    public void Teken(Graphics g)
+    {
+        using (var pen = new Pen(Kleur, 3))
+        {
+            g.DrawRectangle(pen, Rect);
+        }
+    }
 }
