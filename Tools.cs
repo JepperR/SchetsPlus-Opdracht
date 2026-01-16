@@ -298,10 +298,8 @@ public class GumTool : PenTool
         foreach (var v in teVerwijderen)
             s.Lijst.GetekendeVormen.Remove(v);
 
-        // 4. startpunt updaten voor volgende gum-stukje
         startpunt = p;
 
-        // 5. opnieuw tekenen
         s.Invalidate();
     }
 }

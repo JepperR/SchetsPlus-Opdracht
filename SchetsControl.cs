@@ -51,7 +51,7 @@ public class SchetsControl : UserControl
 
         return new Rectangle(minX, minY, width, height);
     }
-    // berekening cirkel 
+    // berekening cirkel https://mathworld.wolfram.com/Ellipse.html 
     private bool RaaktCirkel(Vormen v, Point p, int marge)
     {
         Rectangle r = TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt);
