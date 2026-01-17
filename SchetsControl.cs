@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 public class SchetsControl : UserControl
 {
@@ -21,10 +22,15 @@ public class SchetsControl : UserControl
 
         // cirkels
         if (v.soort == "cirkel" || v.soort == "omtrek")
-            return RaaktCirkel(v, p, 2);
+            return RaaktCirkel(v, p, 4);
 
         // gevulde rechthoek
         if (v.soort == "GevuldeRechthoek")
+        {
+            Rectangle r = TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt);
+            return r.Contains(p);
+        }
+        if (v.soort == "tekst")
         {
             Rectangle r = TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt);
             return r.Contains(p);
@@ -131,6 +137,7 @@ public class SchetsControl : UserControl
 
     private void TekenVorm(Graphics g, Vormen v)
     {
+        Font font = new Font("Tahoma", 40);
         switch (v.soort)
         {
             case "kader":
@@ -155,6 +162,10 @@ public class SchetsControl : UserControl
 
             case "lijn":
                 g.DrawLine(new Pen(v.kleur, 3), v.startpunt, v.eindpunt);
+                break;
+            case "tekst":
+                g.DrawRectangle(new Pen(Color.Black, 3), TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt));
+                g.DrawString(v.tekst,font, new SolidBrush(v.kleur), v.startpunt, StringFormat.GenericTypographic);
                 break;
         }
     }

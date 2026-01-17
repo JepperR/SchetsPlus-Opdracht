@@ -34,6 +34,7 @@ public class TekstTool : StartpuntTool
     public override string ToString() { return "tekst"; }
 
     public override void MuisDrag(SchetsControl s, Point p) { }
+    private string huidigeTekst = "";
 
     public override void Letter(SchetsControl s, char c)
     {
@@ -42,15 +43,29 @@ public class TekstTool : StartpuntTool
             Graphics gr = s.MaakBitmapGraphics();
             Font font = new Font("Tahoma", 40);
             string tekst = c.ToString();
-            SizeF sz = 
-            gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-            gr.DrawString   (tekst, font, kwast, 
-                                            this.startpunt, StringFormat.GenericTypographic);
-            // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
+            huidigeTekst += tekst;   // voeg letter toe aan de string
+
+            Point letterStart = new Point(startpunt.X, startpunt.Y);
+
+            SizeF sz =
+            gr.MeasureString(tekst, font, letterStart, StringFormat.GenericTypographic);
+            gr.DrawRectangle(Pens.Transparent, startpunt.X, startpunt.Y, sz.Width, sz.Height);
             startpunt.X += (int)sz.Width;
+            s.Lijst.GetekendeVormen.Add(new Vormen
+            {
+                soort = "tekst",
+                startpunt = letterStart,
+                eindpunt = new Point(letterStart.X + (int)sz.Width, letterStart.Y + (int)sz.Height),
+                kleur = s.PenKleur,
+                tekst = huidigeTekst
+            });
+            startpunt.X += (int)sz.Width;
+            huidigeTekst = ""; // reset voor volgende tekst
+            
             s.Invalidate();
         }
     }
+    
 }
 public abstract class TweepuntTool : StartpuntTool
 { 
@@ -70,13 +85,14 @@ public abstract class TweepuntTool : StartpuntTool
         kwast = Brushes.Gray;
     }
     public override void MuisDrag(SchetsControl s, Point p)
-    {
+    { 
         s.HuidigePreviewVorm = new Vormen
         {
             soort = this.ToString(),
             startpunt = startpunt,
             eindpunt = p,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         };
 
         s.Refresh();
@@ -120,7 +136,8 @@ public class RechthoekTool : TweepuntTool
             soort = "kader",
             startpunt = startpunt,
             eindpunt = eindpunt,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         });
 
         // 3. preview wissen
@@ -156,7 +173,8 @@ public class VolRechthoekTool : RechthoekTool
             soort = "vlak",
             startpunt = startpunt,
             eindpunt = eindpunt,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         });
 
         // 3. preview wissen
@@ -190,7 +208,8 @@ public class VolRechthoekTool : RechthoekTool
             soort = "omtrek",
             startpunt = startpunt,
             eindpunt = eindpunt,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         });
 
         // 3. preview wissen
@@ -223,7 +242,8 @@ public class VolCirkelTool : CirkelTool
             soort = "cirkel",
             startpunt = startpunt,
             eindpunt = eindpunt,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         });
 
         // 3. preview wissen
@@ -255,7 +275,8 @@ public class VolCirkelTool : CirkelTool
             soort = "lijn",
             startpunt = startpunt,
             eindpunt = eindpunt,
-            kleur = s.PenKleur
+            kleur = s.PenKleur,
+            tekst = ""
         });
 
         // 3. preview wissen
@@ -314,22 +335,5 @@ public class Vormen
    public Point startpunt { get; set; }
    public Point eindpunt { get; set; }
    public Color kleur { get; set; }
-}
-
-public class RechthoekVorm : Vormen
-{
- 
-}
-public class GevuldeRechthoekVorm : RechthoekVorm
-{
-   
-}
-
-public class CirkelVorm : Vormen
-{
-    
-}
-public class GevuldeCirkelVorm : CirkelVorm
-{
-    
+   public string tekst { get; set; }
 }
