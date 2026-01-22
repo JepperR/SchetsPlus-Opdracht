@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography.Xml;
 
 public class SchetsControl : UserControl
 {
@@ -22,7 +23,7 @@ public class SchetsControl : UserControl
 
         // cirkels
         if (v.soort == "cirkel" || v.soort == "omtrek")
-            return RaaktCirkel(v, p, 4);
+            return RaaktCirkel(v, p, 2);
 
         // gevulde rechthoek
         if (v.soort == "GevuldeRechthoek")
@@ -39,8 +40,8 @@ public class SchetsControl : UserControl
         if (v.soort == "kader")
             return RaaktKader(v, p, 3);
 
-        if (v.soort == "lijn")
-            return RaaktLijn(p, v.startpunt, v.eindpunt, 4);
+        if (v.soort == "lijn" || v.soort == "pen")
+            return RaaktLijn(v, p, 3);
 
 
         // fallback (lijnen etc.)
@@ -89,23 +90,24 @@ public class SchetsControl : UserControl
 
         return r.Contains(p) && !binnen.Contains(p);
     }
-    private bool RaaktLijn(Point p, Point a, Point b, int marge)
+    private bool RaaktLijn(Vormen v, Point p, int marge)
     {
-        float dx = b.X - a.X;
-        float dy = b.Y - a.Y;
+       int x0 = p.X;
+       int y0 = p.Y;
+       int x1 = v.startpunt.X;
+       int y1 = v.startpunt.Y;
+       int x2 = v.eindpunt.X;
+       int y2 = v.eindpunt.Y;
 
-        if (dx == 0 && dy == 0)
-            return (Math.Abs(p.X - a.X) <= marge && Math.Abs(p.Y - a.Y) <= marge);
+        double afstand = 0;
 
-        float t = ((p.X - a.X) * dx + (p.Y - a.Y) * dy) / (dx * dx + dy * dy);
-        t = Math.Max(0, Math.Min(1, t));
-
-        float projX = a.X + t * dx;
-        float projY = a.Y + t * dy;
-
-        float dist = (float)Math.Sqrt((p.X - projX) * (p.X - projX) + (p.Y - projY) * (p.Y - projY));
-
-        return dist <= marge;
+        afstand = Math.Abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) / 
+            (Math.Sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
+        if (afstand <= marge)
+        {
+            return true;
+        }
+        else return false;
     }
 
     public SchetsControl()
@@ -164,8 +166,11 @@ public class SchetsControl : UserControl
                 g.DrawLine(new Pen(v.kleur, 3), v.startpunt, v.eindpunt);
                 break;
             case "tekst":
-                g.DrawRectangle(new Pen(Color.Black, 3), TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt));
+                g.DrawRectangle(new Pen(Color.Transparent, 3), TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt));
                 g.DrawString(v.tekst,font, new SolidBrush(v.kleur), v.startpunt, StringFormat.GenericTypographic);
+                break;
+            case "pen":
+                g.DrawLine(new Pen(v.kleur, 3), v.startpunt, v.eindpunt);
                 break;
         }
     }

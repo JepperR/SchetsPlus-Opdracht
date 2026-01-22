@@ -291,28 +291,44 @@ public class PenTool : LijnTool
     public override string ToString() { return "pen"; }
 
     public override void MuisDrag(SchetsControl s, Point p)
-    {   this.MuisLos(s, p);
+    {
+
+        this.MuisLos(s, p);
         this.MuisVast(s, p);
+
+         s.Lijst.GetekendeVormen.Add(new Vormen
+        {
+            soort = "pen",
+            startpunt = startpunt,
+            eindpunt = eindpunt,
+            kleur = s.PenKleur,
+            tekst = ""
+        });
+        
+        
+        Debug.WriteLine($"{startpunt}{eindpunt}");
+        s.Invalidate();
     }
 }
     
-public class GumTool : PenTool
+public class GumTool : LijnTool
 {
     public override string ToString() { return "gum"; }
 
-    public override void MuisDrag(SchetsControl s, Point p)
+    public override void MuisLos(SchetsControl s, Point p)
     {
         // 1. gum tekenen op bitmap
         Graphics g = s.MaakBitmapGraphics();
-        g.DrawLine(MaakPen(Brushes.White, 10), startpunt, p);
+        //g.DrawLine(MaakPen(Brushes.White, 1), startpunt, p);
 
         // 2. check welke vormen geraakt worden
         List<Vormen> teVerwijderen = new List<Vormen>();
 
-        foreach (var v in s.Lijst.GetekendeVormen)
+        for (int i = s.Lijst.GetekendeVormen.Count - 1; i >= 0; i--)
         {
-            if (s.RaaktVorm(v, startpunt, p))
-                teVerwijderen.Add(v);
+            if (s.RaaktVorm(s.Lijst.GetekendeVormen[i], startpunt, p))
+                teVerwijderen.Add(s.Lijst.GetekendeVormen[i]);
+            break;
         }
 
         // 3. verwijder vormen
