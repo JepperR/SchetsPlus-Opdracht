@@ -20,10 +20,12 @@ public abstract class StartpuntTool : ISchetsTool
     protected Brush kwast;
 
     public virtual void MuisVast(SchetsControl s, Point p)
-    {   startpunt = p;
+    {
+        startpunt = p;
     }
     public virtual void MuisLos(SchetsControl s, Point p)
-    {   kwast = new SolidBrush(s.PenKleur);
+    {
+        kwast = new SolidBrush(s.PenKleur);
     }
     public abstract void MuisDrag(SchetsControl s, Point p);
     public abstract void Letter(SchetsControl s, char c);
@@ -61,31 +63,34 @@ public class TekstTool : StartpuntTool
             });
             startpunt.X += (int)sz.Width;
             huidigeTekst = ""; // reset voor volgende tekst
-            
+
             s.Invalidate();
         }
     }
-    
+
 }
 public abstract class TweepuntTool : StartpuntTool
-{ 
+{
     public static Rectangle Punten2Rechthoek(Point p1, Point p2)
-    {   return new Rectangle( new Point(Math.Min(p1.X,p2.X), Math.Min(p1.Y,p2.Y))
-                            , new Size (Math.Abs(p1.X-p2.X), Math.Abs(p1.Y-p2.Y))
+    {
+        return new Rectangle(new Point(Math.Min(p1.X, p2.X), Math.Min(p1.Y, p2.Y))
+                            , new Size(Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y))
                             );
     }
     public static Pen MaakPen(Brush b, int dikte)
-    {   Pen pen = new Pen(b, dikte);
+    {
+        Pen pen = new Pen(b, dikte);
         pen.StartCap = LineCap.Round;
         pen.EndCap = LineCap.Round;
         return pen;
     }
     public override void MuisVast(SchetsControl s, Point p)
-    {   base.MuisVast(s, p);
+    {
+        base.MuisVast(s, p);
         kwast = Brushes.Gray;
     }
     public override void MuisDrag(SchetsControl s, Point p)
-    { 
+    {
         s.HuidigePreviewVorm = new Vormen
         {
             soort = this.ToString(),
@@ -98,7 +103,8 @@ public abstract class TweepuntTool : StartpuntTool
         s.Refresh();
     }
     public override void MuisLos(SchetsControl s, Point p)
-    {   base.MuisLos(s, p);
+    {
+        base.MuisLos(s, p);
         eindpunt = p;
         this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
         s.Invalidate();
@@ -107,9 +113,10 @@ public abstract class TweepuntTool : StartpuntTool
     {
     }
     public abstract void Bezig(Graphics g, Point p1, Point p2);
-        
+
     public virtual void Compleet(Graphics g, Point p1, Point p2)
-    {   this.Bezig(g, p1, p2);
+    {
+        this.Bezig(g, p1, p2);
     }
 }
 
@@ -185,7 +192,7 @@ public class VolRechthoekTool : RechthoekTool
 }
 
 
-    public class CirkelTool : TweepuntTool
+public class CirkelTool : TweepuntTool
 {
     public override string ToString() { return "omtrek"; }
 
@@ -253,12 +260,13 @@ public class VolCirkelTool : CirkelTool
     }
 }
 
-    public class LijnTool : TweepuntTool
+public class LijnTool : TweepuntTool
 {
     public override string ToString() { return "lijn"; }
 
     public override void Bezig(Graphics g, Point p1, Point p2)
-    {   g.DrawLine(MaakPen(this.kwast,3), p1, p2);
+    {
+        g.DrawLine(MaakPen(this.kwast, 3), p1, p2);
     }
     public override void MuisLos(SchetsControl s, Point p)
     {
@@ -288,29 +296,40 @@ public class VolCirkelTool : CirkelTool
 
 public class PenTool : LijnTool
 {
+    private Vormen huidigePen;
+
     public override string ToString() { return "pen"; }
+
+    public override void MuisVast (SchetsControl s, Point p)
+    {
+        startpunt = p;
+
+        huidigePen = new Vormen
+        {
+            soort = "pen",
+            kleur = s.PenKleur,
+            punten = new List<Point> { p }
+        };
+
+        s.Lijst.GetekendeVormen.Add(huidigePen);
+
+    }
 
     public override void MuisDrag(SchetsControl s, Point p)
     {
+        huidigePen.punten.Add(p);
+        startpunt = p;
 
-        this.MuisLos(s, p);
-        this.MuisVast(s, p);
-
-         s.Lijst.GetekendeVormen.Add(new Vormen
-        {
-            soort = "pen",
-            startpunt = startpunt,
-            eindpunt = eindpunt,
-            kleur = s.PenKleur,
-            tekst = ""
-        });
-        
-        
-        Debug.WriteLine($"{startpunt}{eindpunt}");
         s.Invalidate();
     }
+
+    public override void MuisLos (SchetsControl s, Point p)
+    {
+        huidigePen.punten.Add(p);
+        huidigePen = null;
+    }
 }
-    
+
 public class GumTool : LijnTool
 {
     public override string ToString() { return "gum"; }
@@ -345,11 +364,14 @@ public class LijstVormen
     public List<Vormen> GetekendeVormen = new List<Vormen>();
 }
 
-public class Vormen 
+public class Vormen
 {
-   public string soort { get; set; }
-   public Point startpunt { get; set; }
-   public Point eindpunt { get; set; }
-   public Color kleur { get; set; }
-   public string tekst { get; set; }
+    public string soort { get; set; }
+    public Point startpunt { get; set; }
+    public Point eindpunt { get; set; }
+    public Color kleur { get; set; }
+    public string tekst { get; set; }
+
+    // wordt alleen bij pen gebruikt
+    public List<Point> punten;
 }

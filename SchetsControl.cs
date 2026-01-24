@@ -40,8 +40,18 @@ public class SchetsControl : UserControl
         if (v.soort == "kader")
             return RaaktKader(v, p, 3);
 
-        if (v.soort == "lijn" || v.soort == "pen")
-            return RaaktLijn(v, p, 3);
+        if (v.soort == "lijn")
+            return RaaktLijn(v.startpunt, v.eindpunt, p, 3);
+
+        if(v.soort == "pen")
+        {
+            for (int i = 0; i < v.punten.Count - 1; i++)
+            {
+                if (RaaktLijn(v.punten[i], v.punten[i + 1], p, 2))
+                    return true;
+            }
+            return false;               
+        }
 
 
         // fallback (lijnen etc.)
@@ -90,18 +100,19 @@ public class SchetsControl : UserControl
 
         return r.Contains(p) && !binnen.Contains(p);
     }
-    private bool RaaktLijn(Vormen v, Point p, int marge)
+    
+    private bool RaaktLijn(Point start, Point eind, Point p, int marge)
     {
-       int x0 = p.X;
-       int y0 = p.Y;
-       int x1 = v.startpunt.X;
-       int y1 = v.startpunt.Y;
-       int x2 = v.eindpunt.X;
-       int y2 = v.eindpunt.Y;
+        int x0 = p.X;
+        int y0 = p.Y;
+        int x1 = start.X;
+        int y1 = start.Y;
+        int x2 = eind.X;
+        int y2 = eind.Y;
 
         double afstand = 0;
 
-        afstand = Math.Abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) / 
+        afstand = Math.Abs((y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) /
             (Math.Sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1)));
         if (afstand <= marge)
         {
@@ -167,10 +178,17 @@ public class SchetsControl : UserControl
                 break;
             case "tekst":
                 g.DrawRectangle(new Pen(Color.Transparent, 3), TweepuntTool.Punten2Rechthoek(v.startpunt, v.eindpunt));
-                g.DrawString(v.tekst,font, new SolidBrush(v.kleur), v.startpunt, StringFormat.GenericTypographic);
+                g.DrawString(v.tekst, font, new SolidBrush(v.kleur), v.startpunt, StringFormat.GenericTypographic);
                 break;
             case "pen":
-                g.DrawLine(new Pen(v.kleur, 3), v.startpunt, v.eindpunt);
+                for (int i = 0; i < v.punten.Count - 1; i++)
+                {
+                    g.DrawLine(
+                        new Pen(v.kleur, 3),
+                        v.punten[i],
+                        v.punten[i + 1]
+                    );
+                }
                 break;
         }
     }
