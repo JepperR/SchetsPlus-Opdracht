@@ -44,7 +44,7 @@ public class SchetsWin : Form
                                 , new TekstTool()
                                 , new GumTool()
                                 };
-        String[] deKleuren = { "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan" };
+        String[] deKleuren = { "Black", "Gray", "White", "Brown", "Red","DarkRed", "Orange","DarkOrange", "Yellow", "LightYellow", "Green", "LightGreen", "LimeGreen", "Indigo", "Blue","DarkBlue", "LightBlue", "Cyan", "Purple", "DarkPurple", "Magenta","Pink","LightPink", "Gold", "Silver"};
 
         this.ClientSize = new Size(700, 500);
         huidigeTool = deTools[0];
