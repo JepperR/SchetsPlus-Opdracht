@@ -209,6 +209,7 @@ public class SchetsControl : UserControl
     public void Schoon(object o, EventArgs ea)
     {
         schets.Schoon();
+        Lijst.GetekendeVormen.Clear();
         this.Invalidate();
     }
 
