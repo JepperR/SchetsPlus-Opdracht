@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Cryptography.Xml;
+using System.IO;
+using System.Reflection.Metadata;
 
 public class SchetsControl : UserControl
 {
@@ -230,5 +232,39 @@ public class SchetsControl : UserControl
     {
         string kleurNaam = ((ToolStripMenuItem)obj).Text;
         penkleur = Color.FromName(kleurNaam);
+    }
+
+    public void SchrijfNaarFile()
+    {
+        StreamWriter writer = new StreamWriter(Text);
+        
+        foreach(Vormen v in Lijst.GetekendeVormen)
+        {
+            writer.WriteLine(v.naarString());
+        }
+
+        writer.Close();
+    }
+
+    public void LeesVanFile(string naam)
+    {
+        Lijst.GetekendeVormen.Clear();
+
+        StreamReader reader = new StreamReader(naam);
+        string regel;
+
+        while ((regel = reader.ReadLine()) != null)
+        {
+            Vormen vorm = Vormen.naarVorm(regel);
+
+            if (vorm != null)
+            {
+                Lijst.GetekendeVormen.Add(vorm);
+            }
+        }
+        
+        reader.Close();
+        Text = naam;
+        this.Invalidate();
     }
 }

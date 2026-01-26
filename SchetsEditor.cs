@@ -5,6 +5,7 @@ using System.Windows.Forms;
 public class SchetsEditor : Form
 {
     private MenuStrip menuStrip;
+    private SchetsControl schetsControl = new SchetsControl(); //ik weet niet of dit goed is, maar anders gaf ie foutmelding
 
     public SchetsEditor()
     {   
@@ -21,6 +22,9 @@ public class SchetsEditor : Form
     {   
         ToolStripDropDownItem menu = new ToolStripMenuItem("File");
         menu.DropDownItems.Add("Nieuw", null, this.nieuw);
+        menu.DropDownItems.Add("Open", null, this.open);
+        menu.DropDownItems.Add("Opslaan", null, this.opslaan);
+        menu.DropDownItems.Add("Opslaan als", null, this.opslaanAls);
         menu.DropDownItems.Add("Exit", null, this.afsluiten);
         menuStrip.Items.Add(menu);
     }
@@ -48,5 +52,38 @@ public class SchetsEditor : Form
     private void afsluiten(object sender, EventArgs e)
     {   
         this.Close();
+    }
+
+    private void open(object o, EventArgs e)
+    {
+        OpenFileDialog dialoog = new OpenFileDialog();
+        dialoog.Filter = "Tekstfiles|*.txt|Alle files|*.*";
+        dialoog.Title = "Tekst openen...";
+        if (dialoog.ShowDialog() == DialogResult.OK)
+        {
+            SchetsWin s = new SchetsWin();
+            s.MdiParent = this;
+            schetsControl.LeesVanFile(dialoog.FileName);
+            s.Show();
+        }
+    }
+
+    private void opslaan(object o, EventArgs e)
+    {
+        if (Text == "")
+            opslaanAls(o, e);
+        else schetsControl.SchrijfNaarFile();
+    }
+
+    private void opslaanAls(object o, EventArgs e)
+    {
+        SaveFileDialog dialoog = new SaveFileDialog();
+        dialoog.Filter = "Tekstfiles|*.txt|Alle files|*.*";
+        dialoog.Title = "Tekst opslaan als...";
+        if (dialoog.ShowDialog() == DialogResult.OK)
+        {
+            Text = dialoog.FileName;
+            schetsControl.SchrijfNaarFile();
+        }
     }
 }

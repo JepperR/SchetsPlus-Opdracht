@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
+using System.Linq;
 
 public interface ISchetsTool
 {
@@ -374,4 +376,108 @@ public class Vormen
 
     // wordt alleen bij pen gebruikt
     public List<Point> punten;
+
+    public string naarString()
+    {
+        string vormNaarString = "";
+
+        switch(soort)
+        {
+            case "kader":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B}";
+                break;
+
+            case "vlak":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B}";
+                break;
+
+            case "omtrek":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B}";
+                break;
+
+            case "cirkel":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B}";
+                break;
+
+            case "lijn":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B}";
+                break;
+
+            case "tekst":
+                vormNaarString = $"{soort} {startpunt.X} {startpunt.Y} {eindpunt.X} {eindpunt.Y} {kleur.R} {kleur.G} {kleur.B} {tekst}";
+                break;
+
+            case "pen":
+                vormNaarString = $"{soort} {kleur.R} {kleur.G} {kleur.B}";
+
+                foreach (Point p in punten)
+                {
+                    vormNaarString += $" {p.X} {p.Y}";
+                }
+                break;
+        }
+
+        return vormNaarString;
+    }
+
+    public static Vormen naarVorm(string invoer)
+    {
+        string[] variablen = invoer.Split();
+        Vormen stringNaarVorm = new Vormen();
+        stringNaarVorm.soort = variablen[0];
+
+        switch (invoer)
+        {
+            case "kader":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                break;
+
+            case "vlak":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                break;
+
+            case "omtrek":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                break;
+
+            case "cirkel":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                break;
+
+            case "lijn":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                break;
+
+            case "tekst":
+                stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
+                stringNaarVorm.eindpunt = new Point(int.Parse(variablen[3]), int.Parse(variablen[4]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                stringNaarVorm.tekst = string.Join(" ", variablen.Skip(8));
+                break; break;
+
+            case "pen":
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                stringNaarVorm.punten = new List<Point>();
+
+                for (int n = 4; n < variablen.Length; n++)
+                {
+                    int x = int.Parse(variablen[n]);
+                    int y = int.Parse(variablen[n + 1]);
+                    stringNaarVorm.punten.Add(new Point(x, y));
+                }
+                break;
+        }
+
+        return stringNaarVorm;
+    }
 }
