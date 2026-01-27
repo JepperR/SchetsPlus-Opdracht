@@ -164,4 +164,9 @@ public class SchetsWin : Form
             cbb.Items.Add(k);
         cbb.SelectedIndex = 0;
     }
+
+    public SchetsControl huidigSchetsControl
+    {
+        get { return schetscontrol; }
+    }
 }

@@ -12,6 +12,7 @@ public class SchetsControl : UserControl
 {
     private Schets schets;
     private Color penkleur;
+    private string bestandsNaam;
 
     public LijstVormen Lijst = new LijstVormen();
     public Vormen HuidigePreviewVorm { get; set; }
@@ -236,7 +237,10 @@ public class SchetsControl : UserControl
 
     public void SchrijfNaarFile()
     {
-        StreamWriter writer = new StreamWriter(Text);
+        if (string.IsNullOrEmpty(bestandsNaam))
+            throw new InvalidOperationException("Geen bestandsnaam ingesteld");
+        
+        StreamWriter writer = new StreamWriter(bestandsNaam);
         
         foreach(Vormen v in Lijst.GetekendeVormen)
         {
@@ -248,6 +252,7 @@ public class SchetsControl : UserControl
 
     public void LeesVanFile(string naam)
     {
+        bestandsNaam = naam;
         Lijst.GetekendeVormen.Clear();
 
         StreamReader reader = new StreamReader(naam);
@@ -264,7 +269,11 @@ public class SchetsControl : UserControl
         }
         
         reader.Close();
-        Text = naam;
         this.Invalidate();
+    }
+
+    public void setBestandsNaam(string naam)
+    {
+        bestandsNaam = naam;
     }
 }

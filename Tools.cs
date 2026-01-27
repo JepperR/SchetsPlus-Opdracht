@@ -426,7 +426,7 @@ public class Vormen
         Vormen stringNaarVorm = new Vormen();
         stringNaarVorm.soort = variablen[0];
 
-        switch (invoer)
+        switch (stringNaarVorm.soort)
         {
             case "kader":
                 stringNaarVorm.startpunt = new Point(int.Parse(variablen[1]), int.Parse(variablen[2]));
@@ -466,10 +466,10 @@ public class Vormen
                 break; break;
 
             case "pen":
-                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[5]), int.Parse(variablen[6]), int.Parse(variablen[7]));
+                stringNaarVorm.kleur = Color.FromArgb(int.Parse(variablen[1]), int.Parse(variablen[2]), int.Parse(variablen[3]));
                 stringNaarVorm.punten = new List<Point>();
 
-                for (int n = 4; n < variablen.Length; n++)
+                for (int n = 4; n < variablen.Length - 1; n += 2)
                 {
                     int x = int.Parse(variablen[n]);
                     int y = int.Parse(variablen[n + 1]);
