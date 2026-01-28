@@ -55,17 +55,15 @@ public class SchetsEditor : Form
 
     private void open(object o, EventArgs e)
     {
-        SchetsWin actief = this.ActiveMdiChild as SchetsWin;
-        if (actief == null) return;
-
         OpenFileDialog dialoog = new OpenFileDialog();
         dialoog.Filter = "Tekstfiles|*.txt|Alle files|*.*";
         dialoog.Title = "Tekst openen...";
+
         if (dialoog.ShowDialog() == DialogResult.OK)
         {
-            SchetsWin s = actief;
+            SchetsWin s = new SchetsWin();
             s.MdiParent = this;
-            actief.huidigSchetsControl.LeesVanFile(dialoog.FileName);
+            s.huidigSchetsControl.LeesVanFile(dialoog.FileName);
             s.Show();
         }
     }
