@@ -63,7 +63,7 @@ public class SchetsWin : Form
                                 , new TekstTool()
                                 , new GumTool()
                                 };
-        String[] deKleuren = { "Black", "Gray", "White", "Brown", "Red","DarkRed", "Orange","DarkOrange", "Yellow", "LightYellow", "Green", "LightGreen", "LimeGreen", "Indigo", "Blue","DarkBlue", "LightBlue", "Cyan", "Purple", "DarkPurple", "Magenta","Pink","LightPink", "Gold", "Silver"};
+        String[] deKleuren = { "Black", "Gray", "White", "Brown", "Red","DarkRed", "Orange","DarkOrange", "Yellow", "LightYellow", "Green", "LightGreen", "LimeGreen", "Indigo", "Blue","DarkBlue", "LightBlue", "Cyan", "Purple", "DarkMagenta", "Magenta","Pink","LightPink", "Gold", "Silver"};
 
         this.ClientSize = new Size(700, 500);
         huidigeTool = deTools[0];
@@ -144,7 +144,7 @@ public class SchetsWin : Form
             RadioButton b = new RadioButton();
             b.Appearance = Appearance.Button;
             b.Size = new Size(55, 62);
-            b.Location = new Point(10, 10 + t * 62);
+            b.Location = new Point(5, 10 + t * 62);
             b.Tag = tool;
             b.Text = tool.ToString();
             b.Image = new Bitmap($"../../../Icons/{tool.ToString()}.png");
@@ -164,21 +164,21 @@ public class SchetsWin : Form
             
         Button clear = new Button(); paneel.Controls.Add(clear);
         clear.Text = "Clear";  
-        clear.Location = new Point(  0, 0); 
+        clear.Location = new Point(  10, 0); 
         clear.Click += schetscontrol.Schoon;        
             
         Button rotate = new Button(); paneel.Controls.Add(rotate);
         rotate.Text = "Rotate"; 
-        rotate.Location = new Point( 80, 0); 
+        rotate.Location = new Point( 90, 0); 
         rotate.Click += schetscontrol.Roteer; 
            
         Label penkleur = new Label(); paneel.Controls.Add(penkleur);
         penkleur.Text = "Penkleur:"; 
-        penkleur.Location = new Point(180, 3); 
+        penkleur.Location = new Point(190, 3); 
         penkleur.AutoSize = true;               
             
         ComboBox cbb = new ComboBox(); paneel.Controls.Add(cbb);
-        cbb.Location = new Point(240, 0); 
+        cbb.Location = new Point(250, 0); 
         cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
         cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
         foreach (string k in kleuren)
