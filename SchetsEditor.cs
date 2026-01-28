@@ -22,8 +22,6 @@ public class SchetsEditor : Form
         ToolStripDropDownItem menu = new ToolStripMenuItem("File");
         menu.DropDownItems.Add("Nieuw", null, this.nieuw);
         menu.DropDownItems.Add("Open", null, this.open);
-        menu.DropDownItems.Add("Opslaan", null, this.opslaan);
-        menu.DropDownItems.Add("Opslaan als", null, this.opslaanAls);
         menu.DropDownItems.Add("Exit", null, this.afsluiten);
         menuStrip.Items.Add(menu);
     }
@@ -68,26 +66,4 @@ public class SchetsEditor : Form
         }
     }
 
-    private void opslaanAls(object o, EventArgs e)
-    {
-        SchetsWin actief = this.ActiveMdiChild as SchetsWin;
-        
-        SaveFileDialog dialoog = new SaveFileDialog();
-        dialoog.Filter = "Tekstfiles|*.txt|Alle files|*.*";
-        dialoog.Title = "Tekst opslaan als...";
-        if (dialoog.ShowDialog() == DialogResult.OK)
-        {
-            actief.huidigSchetsControl.setBestandsNaam(dialoog.FileName);
-            actief.huidigSchetsControl.SchrijfNaarFile();
-        }
-    }
-
-    private void opslaan(object o, EventArgs e)
-    {
-        SchetsWin actief = this.ActiveMdiChild as SchetsWin;
-
-        if (Text == "")
-            opslaanAls(o, e);
-        else actief.huidigSchetsControl.SchrijfNaarFile();
-    }
 }

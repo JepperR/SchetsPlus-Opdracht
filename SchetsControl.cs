@@ -12,7 +12,7 @@ public class SchetsControl : UserControl
 {
     private Schets schets;
     private Color penkleur;
-    private string bestandsNaam;
+    public string bestandsNaam { get; private set; }
 
     public LijstVormen Lijst = new LijstVormen();
     public Vormen HuidigePreviewVorm { get; set; }

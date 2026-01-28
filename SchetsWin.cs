@@ -33,6 +33,25 @@ public class SchetsWin : Form
         this.Close();
     }
 
+    private void opslaanAls(object o, EventArgs e)
+    {
+        SaveFileDialog dialoog = new SaveFileDialog();
+        dialoog.Filter = "Tekstfiles|*.txt|Alle files|*.*";
+        dialoog.Title = "Tekst opslaan als...";
+        if (dialoog.ShowDialog() == DialogResult.OK)
+        {
+            this.schetscontrol.setBestandsNaam(dialoog.FileName);
+            this.schetscontrol.SchrijfNaarFile();
+        }
+    }
+
+    private void opslaan(object o, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(this.schetscontrol.bestandsNaam))
+            opslaanAls(o, e);
+        else this.schetscontrol.SchrijfNaarFile();
+    }
+
     public SchetsWin()
     {
         ISchetsTool[] deTools = { new PenTool()         
@@ -86,6 +105,8 @@ public class SchetsWin : Form
         ToolStripMenuItem menu = new ToolStripMenuItem("File");
         menu.MergeAction = MergeAction.MatchOnly;
         menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
+        menu.DropDownItems.Add("Opslaan", null, this.opslaan);
+        menu.DropDownItems.Add("Opslaan als", null, this.opslaanAls);
         menuStrip.Items.Add(menu);
     }
 
