@@ -237,6 +237,22 @@ public class SchetsControl : UserControl
         penkleur = Color.FromName(kleurNaam);
     }
 
+    public void kiesEigenKleur(object sender, EventArgs ea)
+    {
+        using (ColorDialog dialoog = new ColorDialog())
+        {
+            dialoog.AllowFullOpen = true;
+            dialoog.AnyColor = true;
+            dialoog.Color = penkleur;
+
+            if (dialoog.ShowDialog() == DialogResult.OK)
+            {
+                penkleur = dialoog.Color;
+            }
+        }
+    }
+
+
     public void VeranderKleurViaMenu(object obj, EventArgs ea)
     {
         string kleurNaam = ((ToolStripMenuItem)obj).Text;

@@ -63,7 +63,7 @@ public class SchetsWin : Form
                                 , new TekstTool()
                                 , new GumTool()
                                 };
-        String[] deKleuren = { "Black", "Gray", "White", "Brown", "Red","DarkRed", "Orange","DarkOrange", "Yellow", "LightYellow", "Green", "LightGreen", "LimeGreen", "Indigo", "Blue","DarkBlue", "LightBlue", "Cyan", "Purple", "DarkMagenta", "Magenta","Pink","LightPink", "Gold", "Silver"};
+        String[] deKleuren = { "Black", "Gray", "White", "Red", "Orange", "Yellow", "Green", "Blue", "LightBlue", "Purple", "Pink"};
 
         this.ClientSize = new Size(700, 500);
         huidigeTool = deTools[0];
@@ -133,6 +133,7 @@ public class SchetsWin : Form
         ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
         foreach (string k in kleuren)
             submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
+        submenu.DropDownItems.Add("Kies kleur...", null, schetscontrol.kiesEigenKleur);
         menu.DropDownItems.Add(submenu);
         menuStrip.Items.Add(menu);
     }
@@ -190,6 +191,12 @@ public class SchetsWin : Form
         foreach (string k in kleuren)
             cbb.Items.Add(k);
         cbb.SelectedIndex = 0;
+
+        Button eigenKleur = new Button(); paneel.Controls.Add(eigenKleur);
+        eigenKleur.Text = "Kies kleur...";
+        eigenKleur.Location = new Point(cbb.Right + 5, 0);
+        eigenKleur.Size = new Size(90, rotate.Height);
+        eigenKleur.Click += schetscontrol.kiesEigenKleur;
     }
 
     public SchetsControl huidigSchetsControl
