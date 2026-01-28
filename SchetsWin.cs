@@ -128,6 +128,7 @@ public class SchetsWin : Form
     {   
         ToolStripMenuItem menu = new ToolStripMenuItem("Actie");
         menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
+        menu.DropDownItems.Add("Undo", null, schetscontrol.Undo);
         menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
         ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
         foreach (string k in kleuren)
@@ -165,20 +166,25 @@ public class SchetsWin : Form
         Button clear = new Button(); paneel.Controls.Add(clear);
         clear.Text = "Clear";  
         clear.Location = new Point(  10, 0); 
-        clear.Click += schetscontrol.Schoon;        
-            
+        clear.Click += schetscontrol.Schoon;
+
+        Button undo = new Button(); paneel.Controls.Add(undo);
+        undo.Text = "Undo";
+        undo.Location = new Point( 90, 0);
+        undo.Click += schetscontrol.Undo;
+                    
         Button rotate = new Button(); paneel.Controls.Add(rotate);
         rotate.Text = "Rotate"; 
-        rotate.Location = new Point( 90, 0); 
+        rotate.Location = new Point( 170, 0); 
         rotate.Click += schetscontrol.Roteer; 
            
         Label penkleur = new Label(); paneel.Controls.Add(penkleur);
         penkleur.Text = "Penkleur:"; 
-        penkleur.Location = new Point(190, 3); 
+        penkleur.Location = new Point(270, 3); 
         penkleur.AutoSize = true;               
             
         ComboBox cbb = new ComboBox(); paneel.Controls.Add(cbb);
-        cbb.Location = new Point(250, 0); 
+        cbb.Location = new Point(330, 0); 
         cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
         cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
         foreach (string k in kleuren)

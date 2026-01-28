@@ -337,11 +337,7 @@ public class GumTool : LijnTool
 
     public override void MuisLos(SchetsControl s, Point p)
     {
-        // 1. gum tekenen op bitmap
-        Graphics g = s.MaakBitmapGraphics();
-        //g.DrawLine(MaakPen(Brushes.White, 1), startpunt, p);
-
-        // 2. check welke vormen geraakt worden
+        // 1. check welke vormen geraakt worden
         List<Vormen> teVerwijderen = new List<Vormen>();
 
         for (int i = s.Lijst.GetekendeVormen.Count - 1; i >= 0; i--)

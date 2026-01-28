@@ -222,6 +222,15 @@ public class SchetsControl : UserControl
         this.Invalidate();
     }
 
+    public void Undo(object o, EventArgs ea)
+    {
+        if(Lijst.GetekendeVormen.Count > 0)
+        {
+            Lijst.GetekendeVormen.RemoveAt(Lijst.GetekendeVormen.Count - 1);
+            this.Invalidate();
+        }
+    }
+
     public void VeranderKleur(object obj, EventArgs ea)
     {
         string kleurNaam = ((ComboBox)obj).Text;
