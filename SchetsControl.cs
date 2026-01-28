@@ -218,8 +218,7 @@ public class SchetsControl : UserControl
 
     public void Roteer(object o, EventArgs ea)
     {
-        schets.VeranderAfmeting(new Size(this.ClientSize.Height, this.ClientSize.Width));
-        schets.Roteer();
+        Lijst.RoteerAlles(this.ClientSize);
         this.Invalidate();
     }
 

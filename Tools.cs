@@ -364,6 +364,14 @@ public class GumTool : LijnTool
 public class LijstVormen
 {
     public List<Vormen> GetekendeVormen = new List<Vormen>();
+
+    public void RoteerAlles(Size canvas)
+    {
+        foreach(Vormen v in GetekendeVormen)
+        {
+            v.Roteer(canvas);
+        }
+    }
 }
 
 public class Vormen
@@ -479,5 +487,22 @@ public class Vormen
         }
 
         return stringNaarVorm;
+    }
+
+    public void Roteer(Size canvas)
+    {
+        startpunt = new Point(canvas.Height - startpunt.Y, startpunt.X);
+        eindpunt = new Point(canvas.Height - eindpunt.Y, eindpunt.X);
+
+        if(punten != null)
+        {
+            for (int i = 0; i < punten.Count; i++)
+            {
+                punten[i] = new Point(
+                    canvas.Height - punten[i].Y,
+                    punten[i].X
+                );
+            }
+        }
     }
 }
