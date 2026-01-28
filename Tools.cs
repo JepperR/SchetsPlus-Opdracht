@@ -63,7 +63,6 @@ public class TekstTool : StartpuntTool
                 kleur = s.PenKleur,
                 tekst = huidigeTekst
             });
-            startpunt.X += (int)sz.Width;
             huidigeTekst = ""; // reset voor volgende tekst
 
             s.Invalidate();
