@@ -348,8 +348,11 @@ public class GumTool : LijnTool
         for (int i = s.Lijst.GetekendeVormen.Count - 1; i >= 0; i--)
         {
             if (s.RaaktVorm(s.Lijst.GetekendeVormen[i], startpunt, p))
-                teVerwijderen.Add(s.Lijst.GetekendeVormen[i]);
+            {
+             teVerwijderen.Add(s.Lijst.GetekendeVormen[i]);
             break;
+            }
+                
         }
 
         // 3. verwijder vormen
